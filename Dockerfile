@@ -6,7 +6,6 @@ RUN apt-get update && apt-get install -y \
     curl \
     wget \
     unzip \
-    systemctl \
     jq \
     && rm -rf /var/lib/apt/lists/*
 

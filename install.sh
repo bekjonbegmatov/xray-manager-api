@@ -59,7 +59,7 @@ install_dependencies() {
     case $OS in
         ubuntu|debian)
             apt-get update
-            apt-get install -y curl wget unzip python3 python3-pip python3-venv git jq systemctl
+            apt-get install -y curl wget unzip python3 python3-pip python3-venv git jq
             ;;
         centos|rhel|fedora)
             if command -v dnf &> /dev/null; then

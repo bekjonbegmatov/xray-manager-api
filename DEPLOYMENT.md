@@ -125,7 +125,7 @@ sudo chmod 755 /var/lib/xray-manager-api
 
 ```bash
 # Клонирование репозитория
-git clone https://github.com/USERNAME/xray-manager-api.git
+git clone https://github.com/bekjonbegmatov/xray-manager-api.git
 cd xray-manager-api
 
 # Установка Python зависимостей
@@ -272,7 +272,7 @@ networks:
 
 ```bash
 # Клонирование репозитория
-git clone https://github.com/USERNAME/xray-manager-api.git
+git clone https://github.com/bekjonbegmatov/xray-manager-api.git
 cd xray-manager-api
 
 # Создание необходимых директорий
@@ -525,7 +525,7 @@ sudo cp -r /opt/xray-manager-api /opt/xray-manager-api.backup.$(date +%Y%m%d_%H%
 
 # Обновление кода
 cd /tmp
-git clone https://github.com/USERNAME/xray-manager-api.git
+git clone https://github.com/bekjonbegmatov/xray-manager-api.git
 sudo cp -r xray-manager-api/app/* /opt/xray-manager-api/
 sudo chown -R xray-manager:xray-manager /opt/xray-manager-api
 
@@ -556,7 +556,7 @@ sudo cp -r /opt/xray-manager-api /opt/xray-manager-api.backup
 
 # Скачивание новой версии
 cd /tmp
-git clone https://github.com/USERNAME/xray-manager-api.git
+git clone https://github.com/bekjonbegmatov/xray-manager-api.git
 cd xray-manager-api
 
 # Обновление файлов

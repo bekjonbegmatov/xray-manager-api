@@ -24,7 +24,7 @@
 
 ```bash
 # Клонируем репозиторий
-git clone https://github.com/USERNAME/xray-manager-api.git
+git clone https://github.com/bekjonbegmatov/xray-manager-api.git
 cd xray-manager-api
 
 # Запускаем установочный скрипт
@@ -35,7 +35,7 @@ sudo bash install.sh
 
 ```bash
 # Клонируем репозиторий
-git clone https://github.com/USERNAME/xray-manager-api.git
+git clone https://github.com/bekjonbegmatov/xray-manager-api.git
 cd xray-manager-api
 
 # Устанавливаем Docker (если не установлен)
@@ -300,7 +300,7 @@ docker-compose up -d
 
 ```bash
 # Клонируем репозиторий
-git clone https://github.com/USERNAME/xray-manager-api.git
+git clone https://github.com/bekjonbegmatov/xray-manager-api.git
 cd xray-manager-api
 
 # Создаем виртуальное окружение
@@ -363,8 +363,8 @@ A: Используйте Nginx как reverse proxy или настройте S
 
 ### Получение помощи
 
-- **Issues**: [GitHub Issues](https://github.com/USERNAME/xray-manager-api/issues)
-- **Документация**: [Wiki](https://github.com/USERNAME/xray-manager-api/wiki)
+- **Issues**: [GitHub Issues](https://github.com/bekjonbegmatov/xray-manager-api/issues)
+- **Документация**: [Wiki](https://github.com/bekjonbegmatov/xray-manager-api/wiki)
 - **Telegram**: @your_support_channel
 
 ## 📄 Лицензия
