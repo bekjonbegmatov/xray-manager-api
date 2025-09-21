@@ -1,0 +1,151 @@
+version: '3.8'
+
+services:
+  xray-manager-api:
+    build: .
+    container_name: xray-manager-api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"    # API порт
+      - "443:443"      # VLESS порт
+    volumes:
+      - ./data:/data                    # Данные приложения
+      - ./config:/config               # Конфигурации
+      - /var/run/docker.sock:/var/run/docker.sock:ro  # Для управления контейнерами (опционально)
+    environment:
+      # Основные настройки
+      - HOST=0.0.0.0
+      - PORT=8000
+      - DEBUG=false
+      
+      # База данных
+      - DATABASE_URL=sqlite:///data/db/xray_manager.db
+      
+      # Xray настройки
+      - XRAY_CONFIG_PATH=/config/xray/config.json
+      - XRAY_SERVICE_NAME=xray
+      
+      # Безопасность
+      - API_KEYS_FILE=/data/api_keys.json
+      - SECRET_KEY=your-secret-key-change-this
+      
+      # VLESS настройки по умолчанию
+      - DEFAULT_PORT=443
+      - DEFAULT_SECURITY=reality
+      - DEFAULT_FLOW=xtls-rprx-vision
+      - DEFAULT_FP=chrome
+      - DEFAULT_SNI=www.microsoft.com
+      
+    networks:
+      - xray-network
+    
+    # Проверки здоровья
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    
+    # Ограничения ресурсов
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+    
+    # Политики безопасности
+    security_opt:
+      - no-new-privileges:true
+    
+    # Логирование
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Nginx прокси (опционально)
+  nginx:
+    image: nginx:alpine
+    container_name: xray-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - xray-manager-api
+    networks:
+      - xray-network
+    profiles:
+      - nginx  # Запускается только с профилем nginx
+
+  # Мониторинг (опционально)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: xray-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    networks:
+      - xray-network
+    profiles:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: xray-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+      - GF_USERS_ALLOW_SIGN_UP=false
+    depends_on:
+      - prometheus
+    networks:
+      - xray-network
+    profiles:
+      - monitoring
+
+networks:
+  xray-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  prometheus_data:
+  grafana_data:
+
+# Дополнительные конфигурации для разных окружений
+x-common-variables: &common-variables
+  TZ: UTC
+  PYTHONUNBUFFERED: 1
+  PYTHONDONTWRITEBYTECODE: 1
+
+# Профили для разных сценариев развертывания
+# Запуск только API: docker-compose up
+# Запуск с Nginx: docker-compose --profile nginx up
+# Запуск с мониторингом: docker-compose --profile monitoring up
+# Полный стек: docker-compose --profile nginx --profile monitoring up
