@@ -44,14 +44,14 @@
 
 ```bash
 # Скачивание и запуск установочного скрипта
-curl -fsSL https://raw.githubusercontent.com/USERNAME/xray-manager-api/main/install.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/bekjonbegmatov/xray-manager-api/main/install.sh | sudo bash
 ```
 
 ### Установка с параметрами
 
 ```bash
 # Скачивание скрипта
-wget https://raw.githubusercontent.com/USERNAME/xray-manager-api/main/install.sh
+wget https://raw.githubusercontent.com/bekjonbegmatov/xray-manager-api/main/install.sh
 
 # Просмотр доступных опций
 chmod +x install.sh

@@ -249,8 +249,8 @@ create_config() {
           "dest": "www.microsoft.com:443",
           "xver": 0,
           "serverNames": ["www.microsoft.com"],
-          "privateKey": "CHANGE_THIS_PRIVATE_KEY",
-          "shortIds": ["CHANGE_THIS_SHORT_ID"]
+          "privateKey": "",
+          "shortIds": [""]
         }
       }
     }
